@@ -1,0 +1,66 @@
+project_name: 'modeling dpt'
+experiment_name: 'CustomDPT_vaih_vaih'
+experiment_path: '/home/apolyubin/private_data/logs_folder/dip'
+model_name: 'CustomDPT'
+n_epochs: 30
+accelerator: 'gpu'
+device: "1"
+monitor_metric: 'MSE'
+monitor_mode: 'min'
+
+metrics: ['metrics.AbsRel', 'loss.MAELoss', 'loss.RMSELoss']
+
+model_kwargs:
+  model_name: "1"
+  pretrained: true
+
+optimizer: 'torch.optim.AdamW'
+warmup_epochs: 3
+optimizer_kwargs:
+  lr: 2e-4
+  weight_decay: 2e-5
+
+scheduler: 'torch.optim.lr_scheduler.LambdaLR'
+
+scheduler_kwargs:
+  first_cycle_steps: 10
+  cycle_mult: 0.93
+  max_lr: 1e-5
+  min_lr: 1e-9
+  warmup_steps: 1
+  gamma: 0.8
+  last_epoch: -1
+
+losses:
+  - name: 'RMSE'
+    weight: 1.0
+    loss_fn: 'loss.MSELoss'
+    scheduler_args: {'warmup_scale': 0.7,
+                      'lambda': 0.98
+                  }
+
+  - name: 'SILoss'
+    weight: 1.0
+    loss_fn: 'loss.SILoss'
+    scheduler_args: {'warmup_scale': 0.7,
+                      'lambda': 0.98
+                  }
+
+data_config:
+  data_path: '/home/apolyubin/private_data/data/{}'
+  data_path_photos_dict: {
+   'tagil': "/home/apolyubin/shared_data/datasets/Tagil_croped/croped_1_m_px_normalized_ann_images/{}",
+   'ekb': "/home/apolyubin/shared_data/datasets/EKB/1m_crops/images/{}"
+  }
+  data_path_heights_dict: {
+   'tagil': "/home/apolyubin/shared_data/datasets/Tagil_croped/1m_px_crops_heights/{}",
+   'ekb': "/home/apolyubin/shared_data/datasets/EKB/1m_crops/heights/{}"
+  }
+  dataset_names: ["Vaihingen"]
+  crop_size: [384, 384]
+  train_count_samples: 20
+  test_count_samples: 8
+  batch_size: 16
+  n_workers: 16
+  train_size: 0.8
+  accumulate_grad_batches: 2
