@@ -48,14 +48,6 @@ losses:
 
 data_config:
   data_path: '/home/apolyubin/private_data/data/{}'
-  data_path_photos_dict: {
-   'tagil': "/home/apolyubin/shared_data/datasets/Tagil_croped/croped_1_m_px_normalized_ann_images/{}",
-   'ekb': "/home/apolyubin/shared_data/datasets/EKB/1m_crops/images/{}"
-  }
-  data_path_heights_dict: {
-   'tagil': "/home/apolyubin/shared_data/datasets/Tagil_croped/1m_px_crops_heights/{}",
-   'ekb': "/home/apolyubin/shared_data/datasets/EKB/1m_crops/heights/{}"
-  }
   dataset_names: ["Vaihingen"]
   crop_size: [384, 384]
   train_count_samples: 20
